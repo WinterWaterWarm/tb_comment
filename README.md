@@ -19,3 +19,10 @@
     1.scrapy的setting中可设置是否遵守robot.txt，本项目需要把该项改为False才能继续爬取;<br>
     2.在python中‘’的作用和“”近似，但在json‘’不能用作“”;<br>
 
+
+20180806更新：<br>
+    增加MysqlPipeline，可以把信息存入数据库，形式为两个表<br>
+        1.goods表,字段:id(自增主键)、good_id(商品ID,unique)、name(商品名)、sales(销量)<br>
+        2.comments表,字段:id(自增主键)、good_id(商品id，与goods(good_id)外键联系)、rateContent(评论内容)、rateDate(评论时间)、good_type(商品类型)、add_comment(追加评论)<br>
+        3.以上两个表中除了comments表中的add_comment字段，其余均为非空<br>
+

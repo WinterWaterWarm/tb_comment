@@ -67,7 +67,8 @@ ROBOTSTXT_OBEY = False          #忽略robot协议
 
 #开启pipeline功能
 ITEM_PIPELINES = {
-   'scrapy_taobao.pipelines.ScrapyTaobaoPipeline': 100,
+   'scrapy_taobao.pipelines.MysqlPipeline': 100,
+   #'scrapy_taobao.pipelines.ExcelPipeline': 100,
 
 }
 

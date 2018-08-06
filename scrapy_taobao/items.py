@@ -17,5 +17,6 @@ class taobao_comment_item(scrapy.Item):
     name = scrapy.Field()       #商品名称
     comment = scrapy.Field()    #评论（包含商品类型、评论内容、评论时间、追评的一个字典）
     sales = scrapy.Field()      #销量
+    itemId = scrapy.Field()     #商品id
 
 
