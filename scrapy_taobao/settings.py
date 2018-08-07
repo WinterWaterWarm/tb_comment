@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+
+LOG_ENABLED = False
 # Scrapy settings for scrapy_taobao project
 #
 # For simplicity, this file contains only settings considered important or

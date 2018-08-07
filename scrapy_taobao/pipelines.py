@@ -7,7 +7,7 @@
 
 from openpyxl import Workbook
 import pymysql
-
+import logging
 
 class ExcelPipeline(object):
 
@@ -32,6 +32,7 @@ class MysqlPipeline(object):
     def __init__(self):
         self.db = pymysql.Connect(host='localhost',port=3306,user='root',password='ROOKIE',db='tb_comment',charset='utf8mb4')
         self.cursor = self.db.cursor()
+        self.count_goods = 0
         sql1 = """
                 CREATE TABLE IF NOT EXISTS goods(
                     id int unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -52,11 +53,17 @@ class MysqlPipeline(object):
                """
         try:
             self.cursor.execute(sql1)
-            self.cursor.execute(sql2)
-            self.db.comment()
-        except Exception:
+            self.db.commit()
+            print('建表goods...')
+        except:
             self.db.rollback()
-            print('已有表，无需建立')
+
+        try:
+            self.cursor.execute(sql2)
+            self.db.commit()
+            print('建表comments...')
+        except:
+            self.db.rollback()
 
     def close_spider(self,spider):
         self.db.close()
@@ -88,14 +95,14 @@ class MysqlPipeline(object):
             try:
                 self.cursor.execute(sql2)
                 self.db.commit()
-            except Exception:
+                self.count_goods+=1
+                print('写入第%d个商品成功:%s'%(self.count_goods,good_id))
+            except:
                 self.db.rollback()
-                print('写入goods表失败')
+                print('写入goods表失败，商品名:%s'%(good_name))
         try:
             self.cursor.execute(sql3)
             self.db.commit()
         except:
             self.db.rollback()
-            print('写入comments表失败')
-
         return item

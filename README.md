@@ -26,3 +26,8 @@
         2.comments表,字段:id(自增主键)、good_id(商品id，与goods(good_id)外键联系)、rateContent(评论内容)、rateDate(评论时间)、good_type(商品类型)、add_comment(追加评论)<br>
         3.以上两个表中除了comments表中的add_comment字段，其余均为非空<br>
 
+20180807更新：<br>
+    突然发现一页搜索页面的商品数量为48个，而写入数据库里的商品数只有32<br>
+    折腾了一天才发现原来是网址过滤和获取json的问题，顺带还学习了logging库<br>
+        1.修复了爬取数目与实际不符的bug，通过在回调函数中添加 dont_filter=True 解决<br>
+        2.修复了获取评论json有时出错的bug，是网络响应偶尔出错的问题，通过try和except在出错时先time.sleep(1)，而后再尝试，解决<br>
