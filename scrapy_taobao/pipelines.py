@@ -8,6 +8,7 @@
 from openpyxl import Workbook
 import pymysql
 import logging
+from get_wordcloud import create_txt,create_pic
 
 class ExcelPipeline(object):
 
@@ -32,7 +33,6 @@ class MysqlPipeline(object):
     def __init__(self):
         self.db = pymysql.Connect(host='localhost',port=3306,user='root',password='ROOKIE',db='tb_comment',charset='utf8mb4')
         self.cursor = self.db.cursor()
-        self.count_goods = 0
         sql1 = """
                 CREATE TABLE IF NOT EXISTS goods(
                     id int unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -67,6 +67,10 @@ class MysqlPipeline(object):
 
     def close_spider(self,spider):
         self.db.close()
+        print('开始生成词云图片....')
+        create_txt()
+        create_pic()
+        print('生成完毕')
 
     def process_item(self,item,spider):
         good_id = item['itemId']
@@ -74,6 +78,7 @@ class MysqlPipeline(object):
         content = item['comment']['rateContent']
         good_type = item['comment']['auctionSku']
         rate_date = item['comment']['rateDate']
+        count = item['count']
         try:
             add_comment = item['comment']['appComment']['content']
         except:
@@ -95,8 +100,7 @@ class MysqlPipeline(object):
             try:
                 self.cursor.execute(sql2)
                 self.db.commit()
-                self.count_goods+=1
-                print('写入第%d个商品成功:%s'%(self.count_goods,good_id))
+                print('写入第%d个商品成功:%s'%(count,good_id))
             except:
                 self.db.rollback()
                 print('写入goods表失败，商品名:%s'%(good_name))
@@ -106,3 +110,7 @@ class MysqlPipeline(object):
         except:
             self.db.rollback()
         return item
+
+
+class txtPipeline(object):
+    pass

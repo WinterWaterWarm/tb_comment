@@ -31,3 +31,9 @@
     折腾了一天才发现原来是网址过滤和获取json的问题，顺带还学习了logging库<br>
         1.修复了爬取数目与实际不符的bug，通过在回调函数中添加 dont_filter=True 解决<br>
         2.修复了获取评论json有时出错的bug，是网络响应偶尔出错的问题，通过try和except在出错时先time.sleep(1)，而后再尝试，解决<br>
+
+20180816:<br>
+    1.重整了下回调结构，加快了爬取速度;搜索页面直接按销量排序;每个商品均爬取前9页评论;<br>
+    2.控制台传入搜索关键字，如 scrapy crawl comment -a parms='牛奶'  ;<br>
+    3.添加get_wordcloud.py中的两个方法 create_txt和create_pic,前者读取数据库生成txt文件，后者根据txt文件生成词频图片;均存放在当前目录中的wordcloudfile文件夹中;<br>
+    5.学习了os,jieba,wordcloud模块
